@@ -1,0 +1,12 @@
+Observações do teste visual:
+1. Desktop com ícones funciona - 4 ícones visíveis (Sobre Mim, Projetos, Garbo, Terminal)
+2. Duplo clique abre janelas corretamente
+3. Janela "Sobre Mim" abre com skills, barras de progresso e info cards
+4. Terminal abre com ASCII art e prompt funcional
+5. Taskbar mostra relógio (18:22) e data (12/05)
+6. Taskbar mostra apps abertos (Sobre Mim e Terminal)
+7. Botões de minimizar/maximizar/fechar visíveis na barra de título
+
+Problemas a corrigir:
+- O Menu Iniciar não abriu quando cliquei no botão "Iniciar" (pode ser porque a janela Sobre Mim estava na frente)
+- Preciso verificar se o Start Menu funciona corretamente
