@@ -1,72 +1,147 @@
 import { useWindows } from "@/contexts/WindowContext";
+import { User, Folder, Globe, FileText, TerminalSquare, Github, Power } from "lucide-react";
 
 interface StartMenuProps {
   isOpen: boolean;
   onClose: () => void;
+  onShutdown?: () => void; // Propriedade adicionada para receber a função de desligar
 }
 
-const apps = [
-  { id: "about", label: "Sobre Mim", icon: "👤", desc: "Informações pessoais e habilidades" },
-  { id: "projects", label: "Projetos", icon: "📁", desc: "Meus projetos de desenvolvimento" },
-  { id: "garbo", label: "Garbo Ambientes", icon: "🏠", desc: "Projeto de ambientes planejados" },
-  { id: "terminal", label: "Terminal", icon: "💻", desc: "Terminal interativo CLI" },
-];
-
-export default function StartMenu({ isOpen, onClose }: StartMenuProps) {
+export default function StartMenu({ isOpen, onClose, onShutdown }: StartMenuProps) {
   const { openWindow } = useWindows();
+
+  // Lista de aplicativos com os novos ícones padronizados
+  const apps = [
+    {
+      id: "about",
+      title: "Sobre Mim",
+      description: "Informações pessoais e habilidades",
+      icon: (
+        <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white shadow-sm border border-white/10 shrink-0">
+          <User size={18} />
+        </div>
+      ),
+    },
+    {
+      id: "projects",
+      title: "Projetos",
+      description: "Meus projetos de desenvolvimento",
+      icon: (
+        <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white shadow-sm border border-white/10 shrink-0">
+          <Folder size={18} fill="currentColor" />
+        </div>
+      ),
+    },
+    {
+      id: "browser",
+      title: "Navegador",
+      description: "Navegador web interno",
+      icon: (
+        <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white shadow-sm border border-white/10 shrink-0">
+          <Globe size={18} />
+        </div>
+      ),
+    },
+    {
+      id: "cv",
+      title: "Currículo",
+      description: "Visualizar currículo em PDF",
+      icon: (
+        <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center text-white shadow-sm border border-white/10 shrink-0 relative overflow-hidden">
+          <FileText size={18} className="mb-1" />
+          <div className="absolute bottom-0 left-0 right-0 bg-black/30 text-[6px] font-bold text-center py-[1px] uppercase tracking-wider">
+            PDF
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: "terminal",
+      title: "Terminal",
+      description: "Terminal interativo CLI",
+      icon: (
+        <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-gray-800 to-black flex items-center justify-center text-white shadow-sm border border-gray-600 shrink-0">
+          <TerminalSquare size={18} />
+        </div>
+      ),
+    },
+  ];
+
+  const handleOpenApp = (id: string) => {
+    openWindow(id);
+    onClose(); // Fecha o menu iniciar ao abrir um app
+  };
 
   if (!isOpen) return null;
 
-  const handleAppClick = (id: string) => {
-    openWindow(id);
-    onClose();
-  };
-
   return (
     <>
-      {/* Backdrop */}
-      <div className="fixed inset-0 z-[9998]" onClick={onClose} />
-      {/* Menu */}
-      <div className="absolute bottom-14 left-2 w-72 start-menu-glass rounded-xl shadow-2xl z-[9999] overflow-hidden window-open">
-        {/* Header */}
-        <div className="p-4 border-b border-border/30">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg neon-glow">
-              <span className="text-lg font-bold text-white">F</span>
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-foreground">FakeOS</p>
-              <p className="text-[10px] text-muted-foreground">Portfolio v1.0</p>
-            </div>
+      {/* Overlay invisível para fechar o menu ao clicar fora */}
+      <div 
+        className="fixed inset-0 z-40" 
+        onClick={onClose}
+      />
+
+      <div className="absolute bottom-14 left-2 w-80 bg-[#0f172a]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col animate-in slide-in-from-bottom-5 fade-in duration-200">
+        
+        {/* Header do Menu */}
+        <div className="p-4 flex items-center gap-3 border-b border-white/5">
+          <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/20">
+            F
+          </div>
+          <div>
+            <h2 className="text-white font-semibold text-lg leading-tight">FakeOS</h2>
+            <p className="text-gray-400 text-xs">Portfolio v1.0</p>
           </div>
         </div>
 
-        {/* Apps List */}
-        <div className="p-2">
-          <p className="text-[10px] uppercase tracking-wider text-muted-foreground px-2 py-1">Aplicativos</p>
-          {apps.map(app => (
-            <button
-              key={app.id}
-              onClick={() => handleAppClick(app.id)}
-              className="w-full flex items-center gap-3 p-2.5 rounded-lg hover:bg-white/5 transition-colors text-left"
-            >
-              <span className="text-xl">{app.icon}</span>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground">{app.label}</p>
-                <p className="text-[10px] text-muted-foreground truncate">{app.desc}</p>
-              </div>
-            </button>
-          ))}
+        {/* Lista de Aplicativos */}
+        <div className="p-3 flex-1 overflow-y-auto">
+          <p className="text-[10px] font-bold text-gray-500 tracking-wider px-2 mb-2">APLICATIVOS</p>
+          <div className="flex flex-col gap-1">
+            {apps.map((app) => (
+              <button
+                key={app.id}
+                onClick={() => handleOpenApp(app.id)}
+                className="flex items-center gap-3 w-full p-2 rounded-xl hover:bg-white/10 transition-colors text-left group"
+              >
+                {app.icon}
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium text-white group-hover:text-blue-400 transition-colors">
+                    {app.title}
+                  </span>
+                  <span className="text-[11px] text-gray-400 line-clamp-1">
+                    {app.description}
+                  </span>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Footer */}
-        <div className="p-3 border-t border-border/30 flex items-center justify-between">
-          <span className="text-[10px] text-muted-foreground">fakezindev</span>
-          <div className="flex gap-2">
-            <a href="https://github.com/fakezindev" target="_blank" rel="noopener" className="text-muted-foreground hover:text-primary transition-colors">
-              <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-            </a>
-          </div>
+        {/* Footer do Menu */}
+        <div className="p-3 bg-white/5 border-t border-white/10 flex items-center justify-between">
+          
+          {/* Botão Power (Lado Esquerdo) */}
+          <button 
+            onClick={onShutdown}
+            className="p-2 rounded-lg hover:bg-red-500/20 group transition-colors flex items-center gap-2"
+            title="Desligar sistema"
+          >
+            <Power size={16} className="text-gray-400 group-hover:text-red-400 transition-colors" />
+          </button>
+
+          {/* GitHub Link (Lado Direito) */}
+          <button 
+            onClick={() => window.open('https://github.com/fakezindev', '_blank')}
+            className="p-2 rounded-lg hover:bg-white/10 group transition-colors flex items-center gap-2"
+          >
+            <span className="text-xs text-gray-400 font-medium group-hover:text-white transition-colors">
+              fakezindev
+            </span>
+            <Github size={16} className="text-gray-400 group-hover:text-white transition-colors" />
+          </button>
+
         </div>
       </div>
     </>

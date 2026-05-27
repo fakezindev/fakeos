@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useCallback, ReactNode } from "rea
 export interface WindowState {
   id: string;
   title: string;
-  icon: string;
+  icon: ReactNode;
   isOpen: boolean;
   isMinimized: boolean;
   isMaximized: boolean;

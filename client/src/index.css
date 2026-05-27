@@ -1,5 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("https://assets.codepen.io/605876/GeistMonoVF.woff2") format("woff2");
+}
 
 @custom-variant dark (&:is(.dark *));
 
@@ -48,6 +54,14 @@
 
 :root {
   --radius: 0.625rem;
+  
+  /* --- Variáveis do Figma (Adicionadas) --- */
+  --figma-primary: #9d2eff;
+  --figma-secondary: #ff33b1;
+  --figma-accent: #33b1ff; /* Esse é o azul neon que vamos usar no texto! */
+  --figma-background: #0d1117;
+  --figma-bg-alt: #161b22;
+  --figma-border: #30363d;
 }
 
 @layer base {
@@ -100,6 +114,24 @@
   }
 }
 
+@layer utilities {
+  /* --- Classes Utilitárias do Figma --- */
+  .wallpaper-gradient {
+    background: linear-gradient(135deg, var(--figma-bg-alt) 0%, var(--figma-background) 100%);
+  }
+
+  .glow-card {
+    background-color: var(--figma-bg-alt);
+    border: 1px solid var(--figma-border);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease-in-out;
+  }
+
+  .glow-card:hover {
+    box-shadow: 0 6px 20px rgba(157, 46, 255, 0.4);
+  }
+}
+
 /* Custom scrollbar for OS feel */
 ::-webkit-scrollbar {
   width: 6px;
@@ -130,6 +162,13 @@
   background: oklch(0.16 0.015 260 / 0.85);
   backdrop-filter: blur(12px);
   border: 1px solid oklch(0.3 0.02 260 / 0.5);
+}
+
+/* --- Animações do Figma --- */
+@keyframes glow {
+  0% { box-shadow: 0 0 10px var(--figma-accent), inset 0 0 10px var(--figma-accent); }
+  50% { box-shadow: 0 0 20px var(--figma-accent), 0 0 40px var(--figma-accent), inset 0 0 20px var(--figma-accent); }
+  100% { box-shadow: 0 0 10px var(--figma-accent), inset 0 0 10px var(--figma-accent); }
 }
 
 /* Boot animation */

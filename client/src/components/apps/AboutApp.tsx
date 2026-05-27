@@ -1,6 +1,6 @@
 const skills = [
   { name: "Java / Spring Boot", level: 95, color: "from-orange-500 to-red-500" },
-  { name: "Node.js / Express", level: 80, color: "from-green-500 to-emerald-500" },
+  { name: "Node.js / Express", level: 70, color: "from-green-500 to-emerald-500" },
   { name: "C# / .NET", level: 70, color: "from-purple-500 to-violet-500" },
   { name: "React / Vite", level: 85, color: "from-cyan-400 to-blue-500" },
   { name: "PostgreSQL / MySQL", level: 85, color: "from-blue-500 to-indigo-500" },
@@ -12,24 +12,13 @@ const skills = [
 function Avatar() {
   return (
     <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary via-accent to-primary/60 flex items-center justify-center shadow-lg neon-glow relative overflow-hidden shrink-0">
-      {/* Stylized developer avatar SVG */}
-      <svg viewBox="0 0 80 80" className="w-16 h-16" fill="none">
-        {/* Head */}
-        <circle cx="40" cy="26" r="14" fill="oklch(0.9 0.01 260)" />
-        {/* Body */}
-        <path d="M20 72 C20 50 60 50 60 72" fill="oklch(0.9 0.01 260)" />
-        {/* Laptop */}
-        <rect x="28" y="52" width="24" height="14" rx="2" fill="oklch(0.3 0.02 260)" />
-        <rect x="30" y="54" width="20" height="10" rx="1" fill="oklch(0.5 0.15 250)" />
-        {/* Code lines on screen */}
-        <rect x="32" y="56" width="8" height="1.5" rx="0.5" fill="oklch(0.8 0.2 150)" />
-        <rect x="32" y="59" width="12" height="1.5" rx="0.5" fill="oklch(0.7 0.18 250)" />
-        <rect x="32" y="62" width="6" height="1.5" rx="0.5" fill="oklch(0.8 0.15 30)" />
-        {/* Glasses */}
-        <rect x="30" y="22" width="9" height="7" rx="2" stroke="oklch(0.3 0.02 260)" strokeWidth="1.5" fill="none" />
-        <rect x="41" y="22" width="9" height="7" rx="2" stroke="oklch(0.3 0.02 260)" strokeWidth="1.5" fill="none" />
-        <line x1="39" y1="25" x2="41" y2="25" stroke="oklch(0.3 0.02 260)" strokeWidth="1.5" />
-      </svg>
+      <img
+        src="/assets/avatar-cartoon.png" 
+        alt="Avatar"
+        // w-16 h-16 para manter a mesma proporção do SVG original
+        // object-cover para garantir que o rosto fique centralizado e preencha o espaço
+        className="w-20 h-20 rounded-xl object-cover"
+      />
     </div>
   );
 }
