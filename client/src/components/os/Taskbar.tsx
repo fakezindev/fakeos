@@ -1,5 +1,7 @@
 import { useWindows } from "@/contexts/WindowContext";
 import { useState, useEffect } from "react";
+// Importando os ícones para controlar o estado da tela cheia
+import { Maximize, Minimize } from "lucide-react";
 
 interface TaskbarProps {
   onStartClick: () => void;
@@ -9,10 +11,21 @@ interface TaskbarProps {
 export default function Taskbar({ onStartClick, startOpen }: TaskbarProps) {
   const { windows, activeWindowId, focusWindow, minimizeWindow } = useWindows();
   const [time, setTime] = useState(new Date());
+  const [isFullscreen, setIsFullscreen] = useState(false); // Estado para controlar o ícone visual
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
+  }, []);
+
+  // Monitora mudanças nativas de tela cheia (para sincronizar se o usuário apertar ESC ou F11)
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
 
   const openWindows = windows.filter(w => w.isOpen);
@@ -24,6 +37,19 @@ export default function Taskbar({ onStartClick, startOpen }: TaskbarProps) {
       minimizeWindow(id);
     } else {
       focusWindow(id);
+    }
+  };
+
+  // Lógica para alternar o modo de tela cheia
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch((err) => {
+        console.log("Erro ao entrar em tela cheia:", err);
+      });
+    } else {
+      document.exitFullscreen().catch((err) => {
+        console.log("Erro ao sair da tela cheia:", err);
+      });
     }
   };
 
@@ -63,14 +89,31 @@ export default function Taskbar({ onStartClick, startOpen }: TaskbarProps) {
         ))}
       </div>
 
-      {/* System Tray */}
+      {/* System Tray (Relógio, Data e agora com o controle de Tela Cheia) */}
       <div className="flex items-center gap-3 px-2">
-        <div className="text-xs text-muted-foreground font-mono">
-          {time.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
+        
+        {/* Botão de Tela Cheia adicionado à esquerda do relógio */}
+        <button
+          onClick={toggleFullscreen}
+          className="p-1.5 rounded-md hover:bg-white/5 text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center group"
+          title={isFullscreen ? "Sair da Tela Cheia" : "Entrar em Tela Cheia"}
+        >
+          {isFullscreen ? (
+            <Minimize size={14} className="group-hover:scale-105 transition-transform" />
+          ) : (
+            <Maximize size={14} className="group-hover:scale-105 transition-transform" />
+          )}
+        </button>
+
+        <div className="flex flex-col items-end">
+          <div className="text-xs text-muted-foreground font-mono leading-none mb-0.5">
+            {time.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
+          </div>
+          <div className="text-[10px] text-muted-foreground/60 font-mono leading-none">
+            {time.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}
+          </div>
         </div>
-        <div className="text-[10px] text-muted-foreground/60 font-mono">
-          {time.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}
-        </div>
+
       </div>
     </div>
   );

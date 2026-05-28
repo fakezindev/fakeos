@@ -11,12 +11,14 @@ import BrowserApp from "@/components/apps/BrowserApp";
 import TerminalApp from "@/components/apps/TerminalApp";
 import PDFViewerApp from "@/components/apps/PDFViewerApp";
 import Wallpaper from "@/components/os/Wallpaper";
+import MobileDashboard  from "@/components/mobile/MobileDashboard"; 
 
-// Importando os novos ícones para a barra de tarefas e topo das janelas
-import { User, Folder, Globe, TerminalSquare, FileText } from "lucide-react";
+// Importando os novos ícones (Adicionado o Power para a tela de desligar)
+import { User, Folder, Globe, TerminalSquare, FileText, Power } from "lucide-react";
 
 function OSDesktop() {
   const [startOpen, setStartOpen] = useState(false);
+  const [isShutdown, setIsShutdown] = useState(false); // Estado para controlar a tela de desligamento
   const { registerWindow, windows } = useWindows();
   const registered = useRef(false);
 
@@ -70,16 +72,33 @@ function OSDesktop() {
     });
   }, [registerWindow]);
 
+  // Nova lógica de desligamento com tela de encerramento
   const handleShutdown = () => {
-    window.close();
+    setStartOpen(false);
+    setIsShutdown(true);
+    
+    // Tenta fechar a janela após a animação (se o navegador permitir)
+    setTimeout(() => {
+      window.close();
+    }, 3000);
   };
+
+  // Se o utilizador clicou para desligar, renderiza apenas a tela preta
+  if (isShutdown) {
+    return (
+      <div className="fixed inset-0 bg-black z-[99999] flex flex-col items-center justify-center text-white font-mono select-none animate-in fade-in duration-1000">
+        <div className="text-center space-y-3">
+          <Power size={44} className="mx-auto text-red-500 animate-pulse" />
+          <p className="text-sm tracking-wide">A encerrar o sistema...</p>
+          <p className="text-[10px] text-gray-500">FakeOS v1.0 • Bruno</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 overflow-hidden boot-fade-in">
-      {/* 1. O plano de fundo fica na camada mais profunda (z-0) */}
       <Wallpaper />
-
-      {/* 2. O Desktop com os ícones fica por cima do Wallpaper */}
       <Desktop />
 
       {/* Windows */}
@@ -91,10 +110,8 @@ function OSDesktop() {
         <PDFViewerApp fileUrl="/assets/Curriculo_Bruno.pdf" title="Currículo_Bruno.pdf" />
       </Window>
 
-      {/* Start Menu */}
+      {/* Start Menu e Taskbar */}
       <StartMenu isOpen={startOpen} onClose={() => setStartOpen(false)} onShutdown={handleShutdown}/>
-
-      {/* Taskbar */}
       <Taskbar onStartClick={() => setStartOpen(prev => !prev)} startOpen={startOpen} />
     </div>
   );
@@ -102,6 +119,36 @@ function OSDesktop() {
 
 export default function Home() {
   const [booted, setBooted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // LÓGICA DE TELA CHEIA AUTOMÁTICA
+  useEffect(() => {
+    const enterFullscreen = () => {
+      const docEl = document.documentElement;
+      if (docEl.requestFullscreen) {
+        docEl.requestFullscreen().catch((err) => {
+          console.log("Erro ao ativar tela cheia:", err);
+        });
+      }
+      // Remove o listener para não ficar a tentar abrir a tela cheia a cada clique
+      document.removeEventListener("click", enterFullscreen);
+    };
+
+    document.addEventListener("click", enterFullscreen);
+
+    return () => document.removeEventListener("click", enterFullscreen);
+  }, []);
+
+  useEffect(() => {
+    const checkDevice = () => {
+      // 768px é o padrão 'md' do Tailwind (comum para tablets/mobiles)
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkDevice();
+    window.addEventListener("resize", checkDevice);
+    return () => window.removeEventListener("resize", checkDevice);
+  }, []);
 
   const handleBootComplete = useCallback(() => {
     setBooted(true);
@@ -110,7 +157,16 @@ export default function Home() {
   return (
     <WindowProvider>
       {!booted && <BootScreen onComplete={handleBootComplete} />}
-      {booted && <OSDesktop />}
+      
+      {booted && (
+        isMobile ? (
+          /* Se for tela pequena, carrega a experiência estilo Smartphone */
+          <MobileDashboard /> 
+        ) : (
+          /* Se for PC, carrega o seu FakeOS Desktop atual */
+          <OSDesktop />
+        )
+      )}
     </WindowProvider>
   );
 }

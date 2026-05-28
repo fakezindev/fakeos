@@ -1,5 +1,5 @@
 import { ExternalLink, Github, Code2, Zap, Layout, Terminal, AppWindow, MousePointerClick, Maximize2 } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const techStack = [
   { icon: Code2, label: "React & TypeScript", desc: "Hooks, estado e tipagem forte" },
@@ -105,8 +105,28 @@ const galleryScreens = [
 export default function FakeOSApp() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // Referência para o Swipe Mobile
+  const touchStartX = useRef<number | null>(null);
+
   const nextSlide = () => setCurrentSlide(prev => (prev + 1) % galleryScreens.length);
   const prevSlide = () => setCurrentSlide(prev => (prev - 1 + galleryScreens.length) % galleryScreens.length);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diffX = touchStartX.current - touchEndX;
+
+    if (diffX > 50) {
+      nextSlide();
+    } else if (diffX < -50) {
+      prevSlide();
+    }
+    touchStartX.current = null;
+  };
 
   return (
     <div className="h-full overflow-y-auto bg-background text-foreground animate-in fade-in duration-300">
@@ -145,7 +165,13 @@ export default function FakeOSApp() {
           <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
           Interface e Funcionalidades
         </h2>
-        <div className="relative rounded-xl border border-border/30 overflow-hidden bg-[oklch(0.1_0.01_260)] shadow-sm">
+        
+        {/* Adicionados os Listeners de Toque na janela de Preview */}
+        <div 
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          className="relative rounded-xl border border-border/30 overflow-hidden bg-[oklch(0.1_0.01_260)] shadow-sm touch-pan-y select-none"
+        >
           {/* Window Chrome */}
           <div className="h-7 bg-secondary/80 flex items-center px-3 gap-1.5 border-b border-border/20">
             <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
@@ -156,32 +182,34 @@ export default function FakeOSApp() {
             </div>
           </div>
           
-          {/* Caixa adaptada para aspect-video */}
-          <div className="w-full aspect-video max-h-56">
+          {/* Screen content com animação suave de troca baseada no slide ativo */}
+          <div className="w-full aspect-video max-h-56 key={currentSlide} animate-in fade-in duration-300">
             {galleryScreens[currentSlide].content}
           </div>
           
-          {/* Navigation baseada em sky-400 */}
+          {/* Navigation Ajustada */}
           <div className="absolute bottom-2 left-0 right-0 flex items-center justify-center gap-2 z-20">
             <button
               onClick={prevSlide}
-              className="w-6 h-6 rounded-full bg-black/50 backdrop-blur flex items-center justify-center hover:bg-black/80 transition-colors border border-white/10"
+              className="w-6 h-6 rounded-full bg-black/50 backdrop-blur hidden md:flex items-center justify-center hover:bg-black/80 transition-colors border border-white/10"
             >
               <span className="text-white text-[10px]">{"<"}</span>
             </button>
+            
             <div className="flex gap-1.5">
               {galleryScreens.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrentSlide(i)}
-                  className={`w-1.5 h-1.5 rounded-full transition-all ${i === currentSlide ? "bg-sky-400 w-3" : "bg-white/40"}`}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${i === currentSlide ? "bg-sky-400 w-4" : "bg-white/40 w-1.5"}`}
                 />
               ))}
             </div>
+            
             <button
               onClick={nextSlide}
-              className="w-6 h-6 rounded-full bg-black/50 backdrop-blur flex items-center justify-center hover:bg-black/80 transition-colors border border-white/10"
-            >
+              className="w-6 h-6 rounded-full bg-black/50 backdrop-blur hidden md:flex items-center justify-center hover:bg-black/80 transition-colors border border-white/10"
+                >
               <span className="text-white text-[10px]">{">"}</span>
             </button>
           </div>
