@@ -78,11 +78,11 @@ export default function StartMenu({ isOpen, onClose, onShutdown }: StartMenuProp
     <>
       {/* Overlay invisível para fechar o menu ao clicar fora */}
       <div 
-        className="fixed inset-0 z-40" 
+        className="fixed inset-0 z-[9998]" 
         onClick={onClose}
       />
 
-      <div className="absolute bottom-14 left-2 w-80 bg-[#0f172a]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col animate-in slide-in-from-bottom-5 fade-in duration-200">
+      <div className="absolute bottom-14 left-2 w-80 bg-[#0f172a]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl z-[9998] overflow-hidden flex flex-col animate-in slide-in-from-bottom-5 fade-in duration-200">
         
         {/* Header do Menu */}
         <div className="p-4 flex items-center gap-3 border-b border-white/5">

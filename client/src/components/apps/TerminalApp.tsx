@@ -65,7 +65,7 @@ export default function TerminalApp() {
 
   return (
     <div
-      className="h-full bg-[oklch(0.08_0.01_260)] p-4 font-mono text-xs overflow-y-auto cursor-text"
+      className="h-full bg-[oklch(0.08_0.01_260)] p-4 font-mono text-xs overflow-y-auto cursor-text select-none"
       ref={scrollRef}
       onClick={() => inputRef.current?.focus()}
     >
@@ -75,27 +75,35 @@ export default function TerminalApp() {
           line.type === "input" ? "text-primary" :
           line.type === "error" ? "text-red-400" :
           line.type === "ascii" ? "text-primary/70" :
-          "text-foreground/70"
+          "text-foreground/90"
         }`}>
           {line.content}
         </div>
       ))}
 
-      {/* Input line */}
-      <div className="flex items-center gap-0 leading-relaxed">
-        <span className="text-primary">fakezindev@fakeos:~$&nbsp;</span>
+      {/* Input line customizada com o efeito de digitação real */}
+      <div className="flex items-center gap-0 leading-relaxed relative mt-1 min-h-[1rem]">
+        <span className="text-primary shrink-0">fakezindev@fakeos:~$&nbsp;</span>
+        
+        {/* Container visual: renderiza o texto e cola o bloco do cursor logo atrás */}
+        <div className="flex items-center relative pointer-events-none break-all whitespace-pre">
+          <span className="text-foreground/90">{input}</span>
+          {/* O cursor agora usa a cor do teu tema (text-primary) e pulsa de forma nativa */}
+          <span className="w-2 h-4 bg-primary/80 ml-0.5 animate-pulse inline-block shrink-0" />
+        </div>
+
+        {/* O input real fica totalmente invisível por cima, cuidando da interação do teclado */}
         <input
           ref={inputRef}
           type="text"
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="flex-1 bg-transparent outline-none text-foreground/90 caret-primary"
+          className="absolute inset-y-0 right-0 left-[125px] bg-transparent outline-none text-transparent caret-transparent opacity-0 cursor-text"
           autoFocus
           spellCheck={false}
           autoComplete="off"
         />
-        <span className="w-2 h-4 bg-primary/80 cursor-blink" />
       </div>
     </div>
   );
