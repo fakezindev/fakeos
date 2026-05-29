@@ -1,4 +1,4 @@
-import { useWindows } from "@/contexts/WindowContext";
+import { useWindows } from "../../contexts/WindowContext";
 import { User, Folder, Globe, FileText, TerminalSquare, Github, Power } from "lucide-react";
 
 interface StartMenuProps {

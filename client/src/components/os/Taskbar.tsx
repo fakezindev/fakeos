@@ -1,4 +1,4 @@
-import { useWindows } from "@/contexts/WindowContext";
+import { useWindows } from "../../contexts/WindowContext";
 import { useState, useEffect } from "react";
 // Importando os ícones para controlar o estado da tela cheia
 import { Maximize, Minimize } from "lucide-react";

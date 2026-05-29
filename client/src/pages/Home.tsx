@@ -1,17 +1,17 @@
 import { useState, useCallback, useEffect, useRef } from "react";
-import { WindowProvider, useWindows } from "@/contexts/WindowContext";
-import Desktop from "@/components/os/Desktop";
-import Taskbar from "@/components/os/Taskbar";
-import StartMenu from "@/components/os/StartMenu";
-import BootScreen from "@/components/os/BootScreen";
-import Window from "@/components/os/Window";
-import AboutApp from "@/components/apps/AboutApp";
-import ProjectsApp from "@/components/apps/ProjectsApp";
-import BrowserApp from "@/components/apps/BrowserApp";
-import TerminalApp from "@/components/apps/TerminalApp";
-import PDFViewerApp from "@/components/apps/PDFViewerApp";
-import Wallpaper from "@/components/os/Wallpaper";
-import MobileDashboard  from "@/components/mobile/MobileDashboard"; 
+import { WindowProvider, useWindows } from "../contexts/WindowContext";
+import Desktop from "../components/os/Desktop";
+import Taskbar from "../components/os/Taskbar";
+import StartMenu from "../components/os/StartMenu";
+import BootScreen from "../components/os/BootScreen";
+import Window from "../components/os/Window";
+import AboutApp from "../components/apps/AboutApp";
+import ProjectsApp from "../components/apps/ProjectsApp";
+import BrowserApp from "../components/apps/BrowserApp";
+import TerminalApp from "../components/apps/TerminalApp";
+import PDFViewerApp from "../components/apps/PDFViewerApp";
+import Wallpaper from "../components/os/Wallpaper";
+import MobileDashboard  from "../components/mobile/MobileDashboard"; 
 
 // Importando os novos ícones (Adicionado o Power para a tela de desligar)
 import { User, Folder, Globe, TerminalSquare, FileText, Power } from "lucide-react";

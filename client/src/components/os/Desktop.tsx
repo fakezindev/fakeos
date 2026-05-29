@@ -1,4 +1,4 @@
-import { useWindows } from "@/contexts/WindowContext";
+import { useWindows } from "../../contexts/WindowContext";
 import { ReactNode } from "react";
 import { FileText, User, Folder, Globe, TerminalSquare } from "lucide-react";
 

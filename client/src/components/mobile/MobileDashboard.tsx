@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { User, Folder, Globe, TerminalSquare, FileText, Battery, Wifi, ChevronLeft } from "lucide-react";
 
 // Importação dos teus componentes de código reais
-import AboutApp from "@/components/apps/AboutApp";
-import ProjectsApp from "@/components/apps/ProjectsApp";
-import BrowserApp from "@/components/apps/BrowserApp";
-import TerminalApp from "@/components/apps/TerminalApp";
-import PDFViewerApp from "@/components/apps/PDFViewerApp";
+import AboutApp from "../../components/apps/AboutApp";
+import ProjectsApp from "../../components/apps/ProjectsApp";
+import BrowserApp from "../../components/apps/BrowserApp";
+import TerminalApp from "../../components/apps/TerminalApp";
+import PDFViewerApp from "../../components/apps/PDFViewerApp";
 import MobileWallpaper from "./MobileWallpaper";
 
 export default function MobileDashboard() {

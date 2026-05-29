@@ -1,4 +1,4 @@
-import { useWindows } from "@/contexts/WindowContext";
+import { useWindows } from "../../contexts/WindowContext";
 import { Minus, Square, X, Maximize2 } from "lucide-react";
 import { useRef, useState, useEffect, ReactNode } from "react";
 

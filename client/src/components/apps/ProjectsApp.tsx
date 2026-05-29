@@ -1,9 +1,9 @@
 import { useState, useRef } from "react";
 import { createPortal } from "react-dom";
-import GarboApp from "@/components/apps/GarboApp";
-import FakeOSApp from "@/components/apps/FakeOsApp";
-import ChessSystemApp from "@/components/apps/ChessSystemApp";
-import CrachaDesktopApp from "@/components/apps/CrachaDesktopApp";
+import GarboApp from "../../components/apps/GarboApp";
+import FakeOSApp from "../../components/apps/FakeOsApp";
+import ChessSystemApp from "../../components/apps/ChessSystemApp";
+import CrachaDesktopApp from "../../components/apps/CrachaDesktopApp";
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -12,7 +12,6 @@ import {
   Monitor,
   TerminalSquare,
   IdCard,
-  Sparkles,
   Github,
   Eye,
   X
