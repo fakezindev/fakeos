@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, KeyboardEvent } from "react";
-import { COMMANDS, executeCommand, TerminalLine } from "@shared/terminalCommands";
+import { COMMANDS, executeCommand, TerminalLine } from "../../../../shared/terminalCommands";
 
 export default function TerminalApp() {
   const [lines, setLines] = useState<TerminalLine[]>([
@@ -24,7 +24,7 @@ export default function TerminalApp() {
   }, [lines]);
 
   const handleCommand = (cmd: string) => {
-    const inputLine: TerminalLine = { type: "input", content: `fakezindev@fakeos:~$ ${cmd}` };
+    const inputLine: TerminalLine = { type: "input", content: `fakezindev../../fakeos:~$ ${cmd}` };
     const result = executeCommand(cmd);
 
     if (result.shouldClear) {
