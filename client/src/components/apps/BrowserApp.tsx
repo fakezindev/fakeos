@@ -128,7 +128,7 @@ export default function BrowserApp() {
 
               {/* Card LinkedIn */}
               <a 
-                href="https://www.linkedin.com/" 
+                href="https://www.linkedin.com/in/bruno-henrique-ramos-alves/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex flex-col items-center p-6 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-300 transition-all group"
