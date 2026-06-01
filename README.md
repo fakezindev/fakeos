@@ -44,9 +44,23 @@ Para garantir que um sistema operacional complexo rodasse de forma fluida em dis
 
 ## 📦 Como Rodar o Projeto Localmente
 
-Certifique-se de ter o [PNPM](https://pnpm.io/) instalado globalmente na sua máquina.
+Certifique-se de ter o [PNPM](https://pnpm.io/) ou [NODE.JS](https://nodejs.org/pt-br) instalado globalmente na sua máquina.
 
 1. Clone o repositório:
    ```bash
-   git clone [https://github.com/seu-usuario/seu-repositorio-publico.git](https://github.com/seu-usuario/seu-repositorio-publico.git)
-   cd seu-repositorio-publico
+   git clone https://github.com/fakezindev/fakeos.git
+
+2. Instale as dependências na raiz do monorepo:
+
+Bash
+pnpm install ou npm install
+Inicie o ambiente de desenvolvimento (o filtro do pnpm ou npm do node acionará o Vite na pasta correta automaticamente):
+
+3. Bash
+pnpm dev
+Abra http://localhost:3000 no seu navegador, caso não funcione use o http://localhost:5173.
+
+📄 Licença
+Este projeto está sob a licença MIT. Sinta-se livre para explorar, clonar e usar como base para os seus próprios projetos.
+
+Developed with ☕ and TypeScript by Bruno / fakezindev
