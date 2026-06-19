@@ -4,6 +4,7 @@ import GarboApp from "../../components/apps/GarboApp";
 import FakeOSApp from "../../components/apps/FakeOsApp";
 import ChessSystemApp from "../../components/apps/ChessSystemApp";
 import CrachaDesktopApp from "../../components/apps/CrachaDesktopApp";
+import LuxeformApp from "../../components/apps/LuxeFormApp";
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -14,7 +15,8 @@ import {
   IdCard,
   Github,
   Eye,
-  X
+  X,
+  Globe
 } from "lucide-react";
 
 interface Project {
@@ -24,6 +26,9 @@ interface Project {
   tags: string[];
   githubUrl?: string;
   videoPreview?: string;
+  category?: string;
+  themeColor?: string;
+  icon?: string;
 }
 
 const projects: Project[] = [
@@ -50,6 +55,16 @@ const projects: Project[] = [
     tags: ["C#", "WPF", "MVVM", "MySQL"],
     githubUrl: "https://github.com/fakezindev",
     videoPreview: "/assets/previews/cracha-preview.mp4",
+  },
+  {
+    id: "luxeform",
+    title: "LuxeForm Remodeling",
+    category: "Frontend + Backend",
+    description: "Landing page corporativa americana integrada a um microsserviço de captura de leads com envio automatizado de e-mails convertidos para ações de WhatsApp.",
+    tags: ["HTML", "CSS", "JS", "Node.js", "Express", "MySQL"],
+    themeColor: "text-[#a61a2e]",
+    videoPreview: "/assets/previews/luxeform-preview.mp4", 
+    icon: "globe"
   },
   {
     id: "fakeos",
@@ -79,6 +94,7 @@ export default function ProjectsApp() {
       case 'chess': return <TerminalSquare size={28} className="text-green-500" />;
       case 'cracha': return <IdCard size={28} className="text-blue-600" />;
       case 'fakeos': return <Monitor size={28} className="text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.5)]" />;
+      case 'luxeform': return <Globe size={28} className="text-[#a61a2e]" />;
       default: return <Monitor size={28} className="text-primary" />;
     }
   };
@@ -300,6 +316,7 @@ export default function ProjectsApp() {
             {activeProject.id === 'garbo' && <GarboApp />}
             {activeProject.id === 'chess' && <ChessSystemApp />}
             {activeProject.id === 'cracha' && <CrachaDesktopApp />}
+            {activeProject.id === 'luxeform' && <LuxeformApp />}
             {activeProject.id === 'fakeos' && <FakeOSApp />}
           </div>
         )}
